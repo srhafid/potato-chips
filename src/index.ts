@@ -1,7 +1,30 @@
 import { Elysia } from "elysia";
+import { swagger } from '@elysiajs/swagger'
+import { registerRouters } from "./utils/registerRouters";
+import { allRouters } from "./constants/allRouters";
+import { connectDB } from "./databases/connect";
+import { ServerStringMagicConfig } from "./constants/global/serverStringMagic";
+import { dotenvInit } from "./config/dontenv";
+import { RunElysianLogs } from "./constants/global/runElysiaLogs";
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
 
+dotenvInit()
+connectDB()
+
+const configServerStringMagic = ServerStringMagicConfig
+
+const mainApp = new Elysia()
+const app = registerRouters(mainApp, allRouters)
+
+
+app.use(swagger())
+app.listen(configServerStringMagic.port)
+
+
+const helloWorldLogs = RunElysianLogs
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  helloWorldLogs.helloWorld({
+    hostname: app.server?.hostname as string,
+    port: app.server?.port as number,
+  })
 );
