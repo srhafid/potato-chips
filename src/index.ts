@@ -8,7 +8,6 @@ import { ServerStringMagicConfig } from "./constants/global/serverStringMagic";
 import { RunElysianLogs } from "./constants/global/runElysiaLogs";
 import { dotenvInit } from "./modules/envLoader/dotenvInit";
 
-
 const runServer = (): any => {
   connectDB();
 

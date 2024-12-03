@@ -1,11 +1,5 @@
-import { singleton } from "../../utils/decorateSingleton";
-
-interface propsDatabaseStringMagic {
-    readonly portDB: string;
-    readonly typeDatabase: string;
-    readonly urlConnect: string;
-    readonly nameDatabase: string;
-}
+import { propsDatabaseStringMagic } from "@interfaces/constants/global/interfaceDatabaseStringMagic";
+import { singleton } from "@utils/decorateSingleton";
 
 @singleton
 class DatabaseStringMagicConfig {

@@ -3,7 +3,6 @@ import { Logestic } from 'logestic';
 import { StringRoutersLogin } from "../../constants/routers/auth/stringRouterssLogin";
 
 export const authRouterLogin = (): Elysia<any> => {
-    // const stringRoutersLogin = encapsulationStringRoutersLogin()
     const authLogin = new Elysia({ prefix: StringRoutersLogin.prefix })
 
     authLogin.use(Logestic.preset(StringRoutersLogin.logType as any))

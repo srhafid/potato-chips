@@ -9,5 +9,4 @@ export function singleton<T extends { new(...args: any[]): {} }>(referenceToClas
             return instance;
         }
     }
-
 }

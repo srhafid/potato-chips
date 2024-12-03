@@ -1,8 +1,5 @@
+import { propHelloWorld } from "@interfaces/constants/global/interfaceRunElysiaLogs";
 
-interface propHelloWorld {
-    hostname: string;
-    port: number;
-}
 export class RunElysianLogs {
     static helloWorld(props: propHelloWorld) {
         const { hostname, port } = props;
