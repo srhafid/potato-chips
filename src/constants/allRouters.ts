@@ -1,7 +1,8 @@
-import { authLogin } from "../routers/auth/login";
-import { authRegister } from "../routers/auth/register";
+import Elysia from "elysia";
+import { authRouterLogin } from "../routers/auth/login";
+import { authRouterRegister } from "../routers/auth/register";
 
-export const allRouters = [
-    authLogin,
-    authRegister
+export const allRouters: Elysia<any>[] = [
+    authRouterLogin(),
+    authRouterRegister()
 ]

@@ -1,12 +1,49 @@
-export class DatabaseStringMagicConfig {
-    static readonly portDB: string = "27017";
-    static readonly typeDatabase: string = "mongodb";
-    static readonly urlConnect: string = "127.0.0.1";
-    static readonly nameDatabase: string = "mongoose-app";
-    static readonly warnMessageIsCorrect: string = "connect to mongo, is nice";
-    static readonly urlCompleteConnect: string = `${this.typeDatabase}://${this.urlConnect}:${this.portDB}/${this.nameDatabase}`;
+import { singleton } from "../../utils/decorateSingleton";
 
-    static errorArgumentCatch(error: string): string {
-        return `error in connect to mongo db => ${error}`
+interface propsDatabaseStringMagic {
+    readonly portDB: string;
+    readonly typeDatabase: string;
+    readonly urlConnect: string;
+    readonly nameDatabase: string;
+}
+
+@singleton
+class DatabaseStringMagicConfig {
+
+    readonly warningMessage: string = "connect to mongo, is nice";
+
+    readonly portDB: string;
+    readonly typeDatabase: string;
+    readonly urlConnect: string;
+    readonly nameDatabase: string;
+
+    constructor({ portDB, urlConnect, typeDatabase, nameDatabase }: propsDatabaseStringMagic) {
+        this.portDB = portDB;
+        this.urlConnect = urlConnect;
+        this.typeDatabase = typeDatabase;
+        this.nameDatabase = nameDatabase;
+    }
+
+    public get urlCompleteConnect(): string {
+        return `${this.typeDatabase}://${this.urlConnect}:${this.portDB}/${this.nameDatabase}`;
+    }
+
+    public errorArgumentCatch(error: string): string {
+        return `error in connect to mongo db => ${error}`;
     }
 }
+
+export const encapsulationDatabaseStringMagic = (): DatabaseStringMagicConfig => {
+    const { PORT_DB, URL_CONNECT, TYPE_DATABASE, NAME_DATABASE } = process.env;
+
+    if (!PORT_DB || !URL_CONNECT || !TYPE_DATABASE || !NAME_DATABASE) {
+        throw new Error("Missing required environment variables");
+    }
+
+    return new DatabaseStringMagicConfig({
+        portDB: PORT_DB,
+        urlConnect: URL_CONNECT,
+        typeDatabase: TYPE_DATABASE,
+        nameDatabase: NAME_DATABASE
+    });
+};

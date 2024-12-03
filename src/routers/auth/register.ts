@@ -1,10 +1,12 @@
 import { Elysia } from "elysia";
 import { Logestic } from 'logestic';
-import { StringRoutersRegister } from "../../constants/routers/stringRouters";
+import { StringRoutersRegister } from "../../constants/routers/auth/stringRoutersRegister";
 
-const stringMagic = StringRoutersRegister;
+export const authRouterRegister = (): Elysia<any> => {
+    const authRegister = new Elysia({ prefix: StringRoutersRegister.prefix });
 
-export const authRegister = new Elysia({ prefix: stringMagic.prefix })
+    authRegister.use(Logestic.preset(StringRoutersRegister.logType as any));
+    authRegister.get(StringRoutersRegister.routerRegister, () => "");
 
-authRegister.use(Logestic.preset(stringMagic.logType as any))
-authRegister.get(stringMagic.routerRegister, () => "")
+    return authRegister;
+}

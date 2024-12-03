@@ -1,12 +1,12 @@
-import dotenv from 'dotenv';
-import { DotenvInitStringMagicConfig } from '../constants/global/dotenvInitStringMagic';
+import { envLoader } from "./index";
+import { DotenvInitStringMagicConfig } from "./constants/dotenvInitStringMagic";
 
-const envStringMagic = DotenvInitStringMagicConfig
+const envStringMagic = DotenvInitStringMagicConfig;
 
 export const dotenvInit = async (
     environment: 'local' | 'prod' = envStringMagic.environment,
     customPaths: { local?: string; prod?: string } = {}
-): Promise<void> => {
+): Promise<Record<any, any> | undefined> => {
     const envPaths = {
         local: customPaths.local || envStringMagic.envLocal,
         prod: customPaths.prod || envStringMagic.envProd,
@@ -15,13 +15,16 @@ export const dotenvInit = async (
     const envFilePath = envPaths[environment];
 
     try {
-        const fileExists = await Bun.file(envFilePath).exists();
+        const fileExists = Bun.file(envFilePath).exists();
         if (!fileExists) {
             console.error(envStringMagic.errorDonExist(envFilePath));
             process.exit(1);
         }
-        dotenv.config({ path: envFilePath });
+
+        const constantEnv = await envLoader.load(envFilePath);
         console.info(envStringMagic.infoConfigLoadEnvFile(envFilePath));
+
+        return constantEnv;
     } catch (error) {
         console.error(envStringMagic.errorLoadEnvFile(error as string));
         process.exit(1);

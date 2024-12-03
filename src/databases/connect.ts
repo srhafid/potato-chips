@@ -1,12 +1,12 @@
 import { connect } from 'mongoose';
-import { DatabaseStringMagicConfig } from '../constants/global/databaseStringMagic';
+import { encapsulationDatabaseStringMagic } from '../constants/global/databaseStringMagic';
 
-const databaseStringMagic = DatabaseStringMagicConfig
 
 export const connectDB = (): void => {
+    const databaseStringMagic = encapsulationDatabaseStringMagic();
     connect(databaseStringMagic.urlCompleteConnect)
         .then(() => {
-            console.warn(databaseStringMagic.warnMessageIsCorrect);
+            console.warn(databaseStringMagic.warningMessage);
         })
         .catch((error: unknown) => {
             console.error(databaseStringMagic.errorArgumentCatch(error as string));
